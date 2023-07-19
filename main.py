@@ -34,7 +34,7 @@ def play_game(player1, player2):
             continue
 
         if p1_score == p2_score:
-            print("Scores cannot be equal. Play another game.")
+            print("Scores cannot be equal. Keep playing fools! (or fix typo)")
             continue
 
         if abs(p1_score - p2_score) < 2:
@@ -66,12 +66,25 @@ def round_robin(players):
     num_rounds = 2
 
     for round_num in range(1, num_rounds + 1):
-        round_matches = []
-        for i in range(num_players):
-            for j in range(i + 1, num_players):
-                round_matches.append((players[i], players[j]))
-
         print(f"\n---- Round {round_num} ----")
+
+        # Allow the user to choose the order of players for this round
+        player_order = []
+        for i in range(num_players):
+            player_order.append(input(f"Enter Player {i+1}'s position (1 to {num_players}): "))
+        
+        try:
+            player_order = [int(position) for position in player_order]
+            if len(set(player_order)) != num_players:
+                raise ValueError("Invalid input. Each position must be unique.")
+            if not all(1 <= position <= num_players for position in player_order):
+                raise ValueError("Invalid input. Positions must be in the range 1 to num_players.")
+        except ValueError as ve:
+            print(ve)
+            return
+
+        round_matches = [(players[i-1], players[j-1]) for i, j in zip(player_order, player_order[1:] + [player_order[0]])]
+
         for match in round_matches:
             print(f"{match[0].name} vs {match[1].name}")
             winner = play_game(match[0], match[1])

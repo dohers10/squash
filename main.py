@@ -42,7 +42,11 @@ def play_game(player1, player2):
             continue
 
         if p1_score == 0:
-            print(f"{match[0].name} vs {match[1].name}")
+            print("Red frogs heading your way, son.")
+            continue
+        
+        if p2_score == 0:
+            print("Red frogs heading your way, son.")
             continue
             
         break
